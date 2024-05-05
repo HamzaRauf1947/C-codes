@@ -118,6 +118,7 @@ void delAll(struct node **head)
         while (temp != NULL)
         {
             *head = temp->next;
+            (*head)->prev = NULL;
             free(temp);
             temp = *head;
             flag = true;
@@ -216,44 +217,86 @@ void delAtPos(struct node * *head){
 }
 }
 
-void delRoll(struct node** head) {
-    if (*head == NULL) {
-        cout << "List is empty" << endl;
-    } else {
-        struct node *temp = *head, *prevnode = NULL; // Initialize prevnode to NULL
-        int rollSearch;
-        cout << "Enter your rollnumber to delete: " << endl;
-        cin >> rollSearch;
+// void delRoll(struct node** head) {
+//     if (*head == NULL) {
+//         cout << "List is empty" << endl;
+//     } else {
+//         struct node *temp = *head, *prevnode = NULL; // Initialize prevnode to NULL
+//         int rollSearch;
+//         cout << "Enter your rollnumber to delete: " << endl;
+//         cin >> rollSearch;
 
-        // if node 1 to be deleted
-        if (rollSearch == temp->rollNum) {
-            *head = temp->next;
-            (*head)->prev = NULL;
-            free(temp);
-        }else{
+//         // if node 1 to be deleted
+//         if (rollSearch == temp->rollNum) {
+//             *head = temp->next;
+//             (*head)->prev = NULL;
+//             free(temp);
+//         }else{
 
-        while (temp != NULL && temp->rollNum != rollSearch) {
-            prevnode = temp;
-            temp = temp->next;
-        }
+//         while (temp != NULL && temp->rollNum != rollSearch) {
+//             prevnode = temp;
+//             temp = temp->next;
+//         }
 
-        // if there is no found in the list
-        if (temp == NULL) {
-            cout << "Roll number is not found" << endl;
-        }
-        if(temp->next == NULL){
-            prevnode->next = temp->next;   // or prenode->next = NULL;
-            free(temp);
-        }else{
-            prevnode->next = temp->next;
-            temp->next->prev = prevnode;
-            free(temp); 
-        }
+//         // if there is no found in the list
+//         if (temp == NULL) {
+//             cout << "Roll number is not found" << endl;
+//         }
+//         if(temp->next == NULL){
+//             prevnode->next = temp->next;   // or prenode->next = NULL;
+//             free(temp);
+//         }else{
+//             prevnode->next = temp->next;
+//             temp->next->prev = prevnode;
+//             free(temp); 
+//         }
 
         
+//     }
+// }
+// }
+
+
+void delRoll(struct node **head){
+    if(*head == NULL){
+        cout << "list is empty";
+    }else{
+        struct node *temp = *head;
+        int toDel;
+        cout<<"Enter roll number to be deleted: ";
+        cin >> toDel;
+        bool isFound = false;
+        while(temp!=NULL){
+            if(temp->rollNum == toDel){
+               //deleting first node 
+               if(temp == *head){
+                *head = temp->next;
+                temp->prev = NULL;
+               }if(temp->prev!=NULL){
+                temp->prev->next = temp->next;
+               }if(temp->next!=NULL){
+                temp->next->prev = temp->prev;
+               }
+               isFound = true;
+               free(temp);
+            }else{
+            temp=temp->next;
+            }
+                
+        }
+        if(isFound == false){
+            cout<<"Roll number not found"<<endl;
+        }
+        
+        
+
     }
 }
-}
+
+
+
+
+
 
 
 int main()

@@ -67,77 +67,136 @@ void print(struct node **head)
         {
             cout << "rollnumber: " << temp->rollNum << "\tGPA: " << temp->GPA << endl;
             temp = temp->next;
-            if(temp == *head){
+            if (temp == *head)
+            {
                 temp = NULL;
             }
         }
     }
 }
 
-
-void search(struct node* *head){
-    if(*head==NULL){
-        cout<<"List is empty"<<endl;
-    }else{
-    struct node* temp = *head;
-    int searchRollnum;
-    cout<<"Enter your rollNumber to search your id: ";
-    cin >> searchRollnum;
-    bool flag = false;
-    while(temp!= NULL){
-        if(temp->rollNum == searchRollnum){
-            cout<<"Your id is found and your academics are here"<<endl;
-            cout <<"RollNumber: "<<temp->rollNum<<"\tGPA: "<<temp->GPA<<endl;
-            flag = true;
-            break;
-        }else{
-            temp = temp->next;
-            if(temp == *head){
-                temp = NULL;
-            }
-        }
-    }
-    if(flag == false){
-        cout<<"Your id is not present"<<endl;
-    }
-    }
-}
-
-
-void del(struct node** head) {
-    if (*head == NULL) {
+void search(struct node **head)
+{
+    if (*head == NULL)
+    {
         cout << "List is empty" << endl;
-    } else {
-        struct node *temp = *head, *prevnode = NULL; // Initialize prevnode to NULL
-        int rollSearch;
-        cout << "Enter your rollnumber to delete: " << endl;
-        cin >> rollSearch;
-
-        // if node 1 to be deleted
-        if (rollSearch == temp->rollNum) {
-            *head = temp->next;
-            free(temp);
-        }
-
-        while (temp != NULL && temp->rollNum != rollSearch) {
-            prevnode = temp;
-            temp = temp->next;
-            if(temp == *head){
-                temp = NULL;
+    }
+    else
+    {
+        struct node *temp = *head;
+        int searchRollnum;
+        cout << "Enter your rollNumber to search your id: ";
+        cin >> searchRollnum;
+        bool flag = false;
+        while (temp != NULL)
+        {
+            if (temp->rollNum == searchRollnum)
+            {
+                cout << "Your id is found and your academics are here" << endl;
+                cout << "RollNumber: " << temp->rollNum << "\tGPA: " << temp->GPA << endl;
+                flag = true;
+                break;
+            }
+            else
+            {
+                temp = temp->next;
+                if (temp == *head)
+                {
+                    temp = NULL;
+                }
             }
         }
-
-        // if there is no found in the list
-        if (temp == NULL) {
-            cout << "Roll number not found" << endl;
+        if (flag == false)
+        {
+            cout << "Your id is not present" << endl;
         }
-
-        prevnode->next = temp->next;
-        free(temp);
     }
 }
 
+//? code is working fine but not fullfilled all rule of circular linked list
+// void del(struct node** head) {
+//     if (*head == NULL) {
+//         cout << "List is empty" << endl;
+//     } else {
+//         struct node *temp = *head, *prevnode = NULL; // Initialize prevnode to NULL
+//         int rollSearch;
+//         cout << "Enter your rollnumber to delete: " << endl;
+//         cin >> rollSearch;
 
+//         // if node 1 to be deleted
+//         if (rollSearch == temp->rollNum) {
+//             *head = temp->next;
+//             free(temp);
+//         }
+
+//         while (temp != NULL && temp->rollNum != rollSearch) {
+//             prevnode = temp;
+//             temp = temp->next;
+//             if(temp == *head){
+//                 temp = NULL;
+//             }
+//         }
+
+//         // if there is no found in the list
+//         if (temp == NULL) {
+//             cout << "Roll number not found" << endl;
+//         }
+
+//         prevnode->next = temp->next;
+//         free(temp);
+//     }
+// }
+
+//? correct code
+void del(struct node **head)
+{
+    if (*head == NULL)
+    {
+        cout << "List is empty" << endl;
+    }
+    else
+    {
+        struct node *temp = (*head)->next;
+        struct node *prev = (*head);
+        int toDel;
+        bool isFound = false;
+        cout << "Enter Roll number to delete: ";
+        cin >> toDel;
+        // To delete first node
+        if (toDel == (*head)->rollNum)
+        {
+            while (temp->next != *head)
+            {
+                temp = temp->next;
+            }
+            *head = (*head)->next;
+            temp->next = *head;
+            isFound = true;
+
+            free(prev);
+        }
+        else
+        { // To delete any node(last node is also incuded) except first node
+            while (temp != *head)
+            {
+                if (toDel == temp->rollNum)
+                {
+                    prev->next = temp->next;
+                    isFound = true;
+                    free(temp);
+                }
+                else
+                {
+                    temp = temp->next;
+                    prev = prev->next;
+                }
+            }
+        }
+        if(isFound == false){
+            cout<<"Roll number is not found"<<endl;
+        }
+    }
+}
 
 int main()
 {

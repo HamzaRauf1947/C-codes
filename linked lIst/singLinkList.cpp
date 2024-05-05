@@ -233,6 +233,7 @@ void delRoll(struct node **head){
             if(temp == NULL){
                 cout<<"Roll number does not exist";
             }
+            
         }
         
 
